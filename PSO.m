@@ -61,12 +61,8 @@ while IterationNum <= IterMaxPSO
     
     %% 适应度计算 - 性能关键部分
     try
-        % 使用优化的适应度计算函数
-        if exist('AllFitnessCalandSort_Optimized.m', 'file')
-            [Ranked_Fitness, RankedPop, AllFitness, Population] = AllFitnessCalandSort_Optimized(Population_PSO);
-        else
-            [Ranked_Fitness, RankedPop, AllFitness, Population] = AllFitnessCalandSort(Population_PSO);
-        end
+        % 优先使用原始的适应度计算函数（稳定版本）
+        [Ranked_Fitness, RankedPop, AllFitness, Population] = AllFitnessCalandSort(Population_PSO);
         current_best = Ranked_Fitness(1);
         
         % 记录性能数据

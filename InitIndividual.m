@@ -1,20 +1,20 @@
 function [Individual]=InitIndividual(Num)
-%% Êä³ö
-%IndividualµÄ¹¹³É£ºÒ»¸ö¸öÌåµÄÈ¾É«ÌåÊıÁ¿Col_of_Individual=TrainNum*2+TotalStopTimes*2+TotalSections*2+Num_StopPlan*2;
-%% Óë»ùÒò³¤¶ÈÓĞ¹Ø
-global TrainNum;%ÁĞ³µÊı 
+%% ï¿½ï¿½ï¿½
+%Individualï¿½Ä¹ï¿½ï¿½É£ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Col_of_Individual=TrainNum*2+TotalStopTimes*2+TotalSections*2+Num_StopPlan*2;
+%% ï¿½ï¿½ï¿½ï¿½ò³¤¶ï¿½ï¿½Ğ¹ï¿½
+global TrainNum;%ï¿½Ğ³ï¿½ï¿½ï¿½ 
 global Col_of_Individual;
 global TotalStopTimes;
 global TotalSections;
 global Num_StopPlan;
-%% ÓëÔ¼ÊøÓĞ¹Ø
+%% ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ğ¹ï¿½
 global MaxDwellTimeMat;%MaxDwellTimeMat=zeros(1,TotalStopTimes);
 global MinDwellTimeMat;%MinDwellTimeMat=zeros(1,TotalStopTimes);
 global MaxHeadwayTime;%MaxHeadwayTime=150*ones(1,TrainNum);
 global MinHeadwayTime;%MinHeadwayTime=200*ones(1,TrainNum);
-global MaxRunTimeMat;%Óë³õÊ¼»¯ÖÖÈºÊ±µÄÃ¿¸ö¸öÌåµÄ¾ØÕóĞÎÊ½Ò»ÑùµÄ×ÓÇø¼äÔËĞĞÊ±¼äË÷Òı·¶Î§ÏŞÖÆ¾ØÕó£¬±ãÓÚÔÚÉú³ÉÖÖÈºÊ±Ê¹ÓÃ,(1,1:TotalSections)·Ö±ğÊÇµÚÏÂĞĞ1¸öÍ£Õ¾·½°¸µÚÒ»¸öÔËĞĞÇø¼äµÄÏŞÖÆ·¶Î§µ½ÏÂĞĞ×îºóÒ»¸ö·½°¸×îºóÒ»¸öÔËĞĞÇø¼äµÄÏŞÖÆ·¶Î§£»
+global MaxRunTimeMat;%ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ÈºÊ±ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½Ê½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§ï¿½ï¿½ï¿½Æ¾ï¿½ï¿½ó£¬±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÈºÊ±Ê¹ï¿½ï¿½,(1,1:TotalSections)ï¿½Ö±ï¿½ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½Í£Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½Î§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½Î§ï¿½ï¿½
 %MaxRunTimeMat=ones(1,2*TotalSections);
-global MinRunTimeMat;%Óë³õÊ¼»¯ÖÖÈºÊ±µÄÃ¿¸ö¸öÌåµÄ¾ØÕóĞÎÊ½Ò»ÑùµÄ×ÓÇø¼äÔËĞĞÊ±¼äË÷Òı·¶Î§ÏŞÖÆ¾ØÕó£¬±ãÓÚÔÚÉú³ÉÖÖÈºÊ±Ê¹ÓÃ(1,TotalSections+1:TotalSections*2)·Ö±ğÊÇµÚÉÏĞĞ1¸öÍ£Õ¾·½°¸µÚÒ»¸öÔËĞĞÇø¼äµÄÏŞÖÆ·¶Î§µ½ÉÏĞĞ×îºóÒ»¸ö·½°¸×îºóÒ»¸öÔËĞĞÇø¼äµÄÏŞÖÆ·¶Î§£»
+global MinRunTimeMat;%ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ÈºÊ±ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½Ê½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§ï¿½ï¿½ï¿½Æ¾ï¿½ï¿½ó£¬±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÈºÊ±Ê¹ï¿½ï¿½(1,TotalSections+1:TotalSections*2)ï¿½Ö±ï¿½ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½Í£Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½Î§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½Î§ï¿½ï¿½
 %MinRunTimeMat=ones(1,2*TotalSections);
 if Num==1
 Individual=zeros(1,Col_of_Individual);
@@ -22,7 +22,8 @@ Individual(1,1:TrainNum*2)=[round((MaxHeadwayTime-MinHeadwayTime).*rand(1,TrainN
 
 Individual(1,TrainNum*2+1:TrainNum*2+TotalStopTimes*2)=[round((MaxDwellTimeMat-MinDwellTimeMat).*rand(1,TotalStopTimes)+MinDwellTimeMat) round((MaxDwellTimeMat-MinDwellTimeMat).*rand(1,TotalStopTimes)+MinDwellTimeMat)];
 Individual(1,TrainNum*2+TotalStopTimes*2+1:TrainNum*2+TotalStopTimes*2+TotalSections*2)=round((MaxRunTimeMat-MinRunTimeMat).*rand(1,TotalSections*2)+MinRunTimeMat);
-Individual(1,TrainNum*2+TotalStopTimes*2+TotalSections*2+1:Col_of_Individual)=[4 2 3 1 5 6 7 8 9 10 4 2 3 1 5 6 7 8 9 10];
+Individual(1,TrainNum*2+TotalStopTimes*2+TotalSections*2+1:Col_of_Individual)=...
+    [repmat(1:Num_StopPlan, 1, 2)]; % åŠ¨æ€ç”Ÿæˆåœç«™æ–¹æ¡ˆ
 
 end
 end
