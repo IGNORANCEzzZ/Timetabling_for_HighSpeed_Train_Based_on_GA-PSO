@@ -24,7 +24,7 @@ end
 %% 基础参数 - 快速初始化
 global P_auxi TrainNum Station StationNum StartStation EndStation;
 P_auxi = 300.15; % 辅助功率 kW
-TrainNum = 20;   % 列车数
+TrainNum = 10;   % 列车数
 
 %% 车站信息 - 优化读取策略
 station_file_exists = exist('线路参数.xlsx', 'file') || exist('线路参数.xls', 'file');
@@ -402,7 +402,7 @@ global c2;
 c2 = 2;
 
 global IterMaxPSO;
-IterMaxPSO = 500; % 减少迭代次数，提高速度
+IterMaxPSO = 1000; % 减少迭代次数，提高速度
 global PSOPopSize;
 PSOPopSize = 200; % 减小种群规模
 
@@ -418,7 +418,7 @@ c2_f = 2.5;
 
 %停机准则
 global fitness_stop;
-fitness_stop = 60000;
+fitness_stop = 60;
 
 %% 竞争进化策略粒子群算法相关参数
 global Num_Parts;

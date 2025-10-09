@@ -1,12 +1,12 @@
 
 
-% BadIndividual=xlsread('¸÷¸ö±äµçÕ¾µç·Ñ×îµÍ´ÎÓÅ½â6_23',1);
-% BestIndividual=xlsread('µç·Ñ×îµÍ6_22',1);
+% BadIndividual=xlsread('å„ä¸ªå˜ç”µç«™ç”µè´¹æœ€ä½æ¬¡ä¼˜è§£6_23',1);
+% BestIndividual=xlsread('ç”µè´¹æœ€ä½6_22',1);
 % 
-% BadIndividual=xlsread('¸÷¸ö±äµçÕ¾µç·Ñ×îµÍ´ÎÓÅ½â6_23',1);
-% BestIndividual=xlsread('¸÷¸ö±äµçÕ¾µç·Ñ×îµÍ×îÖÕ½â6_23',1);
+BadIndividual=xlsread('å„ä¸ªå˜ç”µç«™ç”µè´¹æœ€ä½æ¬¡ä¼˜è§£6_23',1);
+% BestIndividual=xlsread('å„ä¸ªå˜ç”µç«™ç”µè´¹æœ€ä½æœ€ç»ˆè§£6_23',1);
 
-BestIndividual=xlsread('µç·Ñ×îµÍ×îÖÕ½âGA+PSO_ÊÖ¶¯ĞŞ¸ÄÉÏÏÂĞĞ',1);
+BestIndividual=xlsread('æœ€ç»ˆè§£3',4);
 % BestIndividual(1,61)=610;
 % BestIndividual(1,83)=400;
 % BestIndividual(1,85)=550;
@@ -14,26 +14,40 @@ BestIndividual=xlsread('µç·Ñ×îµÍ×îÖÕ½âGA+PSO_ÊÖ¶¯ĞŞ¸ÄÉÏÏÂĞĞ',1);
 % BestIndividual(1,45)=300;
 % BestIndividual(1,79)=400;
 % 
-% xlswrite('µç·Ñ×îµÍ×îÖÕ½âGA+PSO_ÊÖ¶¯ĞŞ¸ÄÉÏĞĞ',BestIndividual,1);
+% xlswrite('ç”µè´¹æœ€ä½æœ€ç»ˆè§£GA+PSO_æ‰‹åŠ¨ä¿®æ”¹ä¸Šè¡Œ',BestIndividual,1);
 % 
 % BestIndividual(1,104)=740;
 % BestIndividual(1,103)=1000;
 % BestIndividual(1,94)=930;
 % BestIndividual(1,93)=430;
 % BestIndividual(1,39)=600;
-% xlswrite('µç·Ñ×îµÍ×îÖÕ½âGA+PSO-ÊÖ¶¯ĞŞ¸ÄÉÏÏÂĞĞ',BestIndividual,1);
-%% ½âÂë
+% xlswrite('ç”µè´¹æœ€ä½æœ€ç»ˆè§£GA+PSO-æ‰‹åŠ¨ä¿®æ”¹ä¸Šä¸‹è¡Œ',BestIndividual,1);
+%% åˆå§‹åŒ–å…¨å±€å˜é‡
+% ç¡®ä¿åœ¨è§£ç ä¹‹å‰å…ˆåˆå§‹åŒ–å…¨å±€å˜é‡
+try
+    % æ£€æŸ¥æ˜¯å¦å·²ç»åˆå§‹åŒ–
+    global OptimizationData;
+    if isempty(OptimizationData)
+        fprintf('å…¨å±€å˜é‡æœªåˆå§‹åŒ–ï¼Œæ­£åœ¨è¿è¡ŒGlobal_Fixed.m...\n');
+        Global_Fixed;
+    end
+catch
+    fprintf('åˆå§‹åŒ–å‡ºé”™ï¼Œä½¿ç”¨Global_Fixed.mè¿›è¡Œåˆå§‹åŒ–...\n');
+    Global_Fixed;
+end
+
+%% è§£ç 
 [Headway,Dwell_Down,Dwell_Up,Runtime_Down,Runtime_Up,RealTime_Down,RealTime_Up]=DeCoder(BestIndividual);
 
-%% ½á¹ûÍ³¼Æ
+%% ç»“æœç»Ÿè®¡
 %[Fitness,GLB_Time_NoSort,TotalTracE_NoReg,TotalAuxiE_NoReg,TotalUsedEnergyAfterReg,TotalBrakE_NoReg,TotalBrakEnergyAfterReg,TotalTracEAfterAux_NoReg,TotalBrakEAfterAux_NoReg,Power_Time_Trac_sum,Power_Time_Brak_sum,Power_Time_TracAfterAux_sum,Power_Time_BrakAfterAux_sum,Power_Time_TracAfterReg,Power_Time_BrakAfterReg]= GAFitnessCalc(BestIndividual);
 %[GLB_Time,Velocity_Time,MinBrakeDistance,Distance,IFSaftyDistance,NoSaftyDistance,SaftyDistancePunc]= GAFitnessCalc(BestIndividual);
 [GLB_Time_NoSortb,Fitnessb,Costb,C_gridb,C_demb,C_totalb,Cost_gridb,Cost_demb,Power_Time_EachSubStaionNum_AfterRegb,Power_Time_EachSubStaionNum_TracAfterRegb,Power_Time_EachSubStation_BrakAfterRegb]= GAFitnessCalc(BadIndividual);
 [GLB_Time_NoSort,Fitness,Cost,C_grid,C_dem,C_total,Cost_grid,Cost_dem,Power_Time_EachSubStaionNum_AfterReg,Power_Time_EachSubStaionNum_TracAfterReg,Power_Time_EachSubStation_BrakAfterReg]= GAFitnessCalc(BestIndividual);
 
-%% µç·Ñ
+%% ç”µè´¹
 if sum(C_gridb)+sum(C_demb)==Costb && sum(C_grid)+sum(C_dem)==Cost
-    disp('¸÷¸öµçÕ¾µç·ÑÏà¼ÓÓë×Üµç·ÑÒ»ÖÂ')
+    disp('å„ä¸ªç”µç«™ç”µè´¹ç›¸åŠ ä¸æ€»ç”µè´¹ä¸€è‡´')
 end
 C_grid_DeceaseRate=(C_gridb-C_grid)./C_gridb*100;
 C_dem_DeceaseRate=(C_demb-C_dem)./C_demb*100;
@@ -43,45 +57,45 @@ Cost_gridb_Decrease=(Cost_gridb-Cost_grid)./Cost_gridb*100;
 Cost_demb_Decrease=(Cost_demb-Cost_dem)./Cost_demb*100;
 Cost_Drease=(Costb-Cost)./Costb*100;
 
-%% ¹¦ÂÊ·Ö²¼
+%% åŠŸç‡åˆ†å¸ƒ
 [train_numb,length_tb]=size(GLB_Time_NoSortb);
 [train_num,length_t]=size(GLB_Time_NoSort);
 tb=1:1:length_tb;
 t=1:1:length_t;
-% Ç£Òı±äµçËùÇ£Òı¸ººÉÏ÷·åÌî¹È¶Ô±È£¨×Ü¹¦ÂÊ¶Ô±È£©
+% ç‰µå¼•å˜ç”µæ‰€ç‰µå¼•è´Ÿè·å‰Šå³°å¡«è°·å¯¹æ¯”ï¼ˆæ€»åŠŸç‡å¯¹æ¯”ï¼‰
 figure(1)
 plot(tb,Power_Time_EachSubStaionNum_AfterRegb(3,:),'-','color',[255/255, 153/255, 51/255],'linewidth',1.5);
 line=max(Power_Time_EachSubStaionNum_AfterRegb(3,:))*ones(1,length_tb);
 hold on
 plot(t,Power_Time_EachSubStaionNum_AfterReg(3,:),'-','color',[0, 102/255, 204/255],'linewidth',1.5);
 hold off
-title('Ç£Òı±äµçËùÇ£Òı¸ººÉÏ÷·åÌî¹È¶Ô±È')
-xlabel('Ê±¼ä£¨s£©')
-ylabel('¹¦ÂÊ£¨kw£©')
-legend('ÓÅ»¯Ç°','ÓÅ»¯ºó')
+title('ç‰µå¼•å˜ç”µæ‰€ç‰µå¼•è´Ÿè·å‰Šå³°å¡«è°·å¯¹æ¯”')
+xlabel('æ—¶é—´ï¼ˆsï¼‰')
+ylabel('åŠŸç‡ï¼ˆkwï¼‰')
+legend('ä¼˜åŒ–å‰','ä¼˜åŒ–å')
 
 figure(2)
-% Ç£Òı±äµçËùĞèÁ¿´óĞ¡¶Ô±È£¨ÕıµÄÇ£Òı¹¦ÂÊ¶Ô±È£©
+% ç‰µå¼•å˜ç”µæ‰€éœ€é‡å¤§å°å¯¹æ¯”ï¼ˆæ­£çš„ç‰µå¼•åŠŸç‡å¯¹æ¯”ï¼‰
 plot(tb,Power_Time_EachSubStaionNum_TracAfterRegb(3,:),'-','color',[255/255, 153/255, 51/255],'linewidth',1.5);
 hold on
 plot(t,Power_Time_EachSubStaionNum_TracAfterReg(3,:),'-','color',[0, 102/255, 204/255],'linewidth',1.5);
 hold off
-title('Ç£Òı±äµçËùĞèÁ¿´óĞ¡¶Ô±È')
-xlabel('Ê±¼ä£¨s£©')
-ylabel('¹¦ÂÊ£¨kw£©')
-legend('ÓÅ»¯Ç°','ÓÅ»¯ºó')
+title('ç‰µå¼•å˜ç”µæ‰€éœ€é‡å¤§å°å¯¹æ¯”')
+xlabel('æ—¶é—´ï¼ˆsï¼‰')
+ylabel('åŠŸç‡ï¼ˆkwï¼‰')
+legend('ä¼˜åŒ–å‰','ä¼˜åŒ–å')
 
 figure(3)
-% Ç£Òı±äµçËù·´À¡ÖÁµçÍøµÄ·´Ïò³±Á÷¶Ô±È£¨ÕıµÄÇ£Òı¹¦ÂÊ¶Ô±È£©
+% ç‰µå¼•å˜ç”µæ‰€åé¦ˆè‡³ç”µç½‘çš„åå‘æ½®æµå¯¹æ¯”ï¼ˆæ­£çš„ç‰µå¼•åŠŸç‡å¯¹æ¯”ï¼‰
 plot(tb,-Power_Time_EachSubStation_BrakAfterRegb(3,:),'-','color',[255/255, 153/255, 51/255],'linewidth',1.5);
 hold on
 plot(t,-Power_Time_EachSubStation_BrakAfterReg(3,:),'-','color',[0, 102/255, 204/255],'linewidth',1.5);
 hold off
-title('Ç£Òı±äµçËù·´À¡ÖÁµçÍøµÄ·´Ïò³±Á÷¶Ô±È')
-xlabel('Ê±¼ä£¨s£©')
-ylabel('¹¦ÂÊ£¨kw£©')
-legend('ÓÅ»¯Ç°','ÓÅ»¯ºó')
-%% Ê±¿Ì±í
+title('ç‰µå¼•å˜ç”µæ‰€åé¦ˆè‡³ç”µç½‘çš„åå‘æ½®æµå¯¹æ¯”')
+xlabel('æ—¶é—´ï¼ˆsï¼‰')
+ylabel('åŠŸç‡ï¼ˆkwï¼‰')
+legend('ä¼˜åŒ–å‰','ä¼˜åŒ–å')
+%% æ—¶åˆ»è¡¨
 A1=12414*ones(1,length_t);
 A2=23600*ones(1,length_t);
 A3=34142*ones(1,length_t);
@@ -117,6 +131,6 @@ hold off
 yticks([12414 23600 34142 43320 68050 72500 89565 110650 137950 164510 192370]);
 yticklabels({'A1','A2','A3','A4','A5','A6','A7','A8','A9','A10','A11'});
 set(gca,'YGrid','on','gridlinestyle','--','gridcolor','k','gridalpha',0.7,'linewidth',1.5);
-xlabel('Ê±¼ä£¨s£©')
-ylabel('³µÕ¾')
-title('½ÚÄÜ¾­¼ÃÊ±¿Ì±í')
+xlabel('æ—¶é—´ï¼ˆsï¼‰')
+ylabel('è½¦ç«™')
+title('èŠ‚èƒ½ç»æµæ—¶åˆ»è¡¨')

@@ -1,9 +1,9 @@
 function [Headway,Dwell_Down,Dwell_Up,Runtime_Down,Runtime_Up,RealTime_Down,RealTime_Up]=DeCoder(Solution)
 global OperationScheme;
 global TrainNum;
-%µ¥ĞĞ±ğ×ÜÍ£Õ¾´ÎÊı
+%ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ï¿½Í£Õ¾ï¿½ï¿½ï¿½ï¿½
 global TotalStopTimes;
-%µ¥ĞĞ±ğ×ÜÇø¼äÊı
+%ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 global TotalSections;
 global Col_of_Individual;
 
@@ -11,17 +11,34 @@ Headway=zeros(2,TrainNum);
 Headway(1,1:TrainNum)=Solution(1,1:TrainNum);
 Headway(2,1:TrainNum)=Solution(1,TrainNum+1:TrainNum*2);
 
-%% Í£Õ¾Ê±¼ä
+%% Í£Õ¾Ê±ï¿½ï¿½
 [StopPlanNum,StationNum]=size(OperationScheme);
 TrainSeq=Solution(1,TrainNum*2+TotalStopTimes*2+TotalSections*2+1:Col_of_Individual);
-TrainSeq_Down=TrainSeq(1,1:StopPlanNum);%·¢³µĞòÁĞ-ÏÂĞĞ
-TrainSeq_Up=TrainSeq(1,StopPlanNum+1:end);%·¢³µĞòÁĞ-ÉÏĞĞ
+% ç¡®ä¿å€¼ä¸ºæ•´æ•°
+TrainSeq = round(TrainSeq);
+TrainSeq_Down=TrainSeq(1,1:StopPlanNum);%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½
+TrainSeq_Up=TrainSeq(1,StopPlanNum+1:end);%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½
 
-Dwell_Down_tmp=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±¼äĞòÁĞ£¬ĞĞ±íÊ¾³µ´Î£¬ÁĞ³µ±íÊ¾A1-A11
-Dwell_Up_tmp=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±¼äĞòÁĞ£¬ĞĞ±íÊ¾³µ´Î£¬ÁĞ³µ±íÊ¾A11-A1
+% å®‰å…¨æ£€æŸ¥ï¼šç¡®ä¿ç´¢å¼•å€¼åœ¨æœ‰æ•ˆèŒƒå›´å†…
+for idx = 1:length(TrainSeq_Down)
+    if TrainSeq_Down(idx) < 1 || TrainSeq_Down(idx) > StopPlanNum
+        warning('ä¸‹è¡Œåˆ—è½¦åºåˆ—ç´¢å¼• %d æ— æ•ˆï¼ˆå€¼: %dï¼‰ï¼Œé‡ç½®ä¸º 1', idx, TrainSeq_Down(idx));
+        TrainSeq_Down(idx) = 1;
+    end
+end
 
-Dwell_Down=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±¼äĞòÁĞ£¬ĞĞ±íÊ¾³µ´Î£¬ÁĞ³µ±íÊ¾A1-A11
-Dwell_Up=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±¼äĞòÁĞ£¬ĞĞ±íÊ¾³µ´Î£¬ÁĞ³µ±íÊ¾A11-A1
+for idx = 1:length(TrainSeq_Up)
+    if TrainSeq_Up(idx) < 1 || TrainSeq_Up(idx) > StopPlanNum
+        warning('ä¸Šè¡Œåˆ—è½¦åºåˆ—ç´¢å¼• %d æ— æ•ˆï¼ˆå€¼: %dï¼‰ï¼Œé‡ç½®ä¸º 1', idx, TrainSeq_Up(idx));
+        TrainSeq_Up(idx) = 1;
+    end
+end
+
+Dwell_Down_tmp=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½Ğ±ï¿½Ê¾ï¿½ï¿½ï¿½Î£ï¿½ï¿½Ğ³ï¿½ï¿½ï¿½Ê¾A1-A11
+Dwell_Up_tmp=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½Ğ±ï¿½Ê¾ï¿½ï¿½ï¿½Î£ï¿½ï¿½Ğ³ï¿½ï¿½ï¿½Ê¾A11-A1
+
+Dwell_Down=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½Ğ±ï¿½Ê¾ï¿½ï¿½ï¿½Î£ï¿½ï¿½Ğ³ï¿½ï¿½ï¿½Ê¾A1-A11
+Dwell_Up=zeros(StopPlanNum,StationNum);%Í£Õ¾Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½Ğ±ï¿½Ê¾ï¿½ï¿½ï¿½Î£ï¿½ï¿½Ğ³ï¿½ï¿½ï¿½Ê¾A11-A1
 
 index_of_stop_down=0;
 index_of_stop_up=0;
@@ -44,7 +61,7 @@ for i=1:1:StopPlanNum
     Dwell_Up(i,:)=Dwell_Up_tmp(TrainSeq_Up(1,i),:);
 end
 Dwell_Up=fliplr(Dwell_Up);
-%% Çø¼äÔËĞĞÊ±¼ä
+%% ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 Runtime_Down_tmp=zeros(StopPlanNum,StationNum-1);
 Runtime_Up_tmp=zeros(StopPlanNum,StationNum-1);
 Runtime_Down=zeros(StopPlanNum,StationNum-1);
@@ -59,25 +76,33 @@ for i=1:1:StopPlanNum
     StopPlan_Up=OperationScheme(i,:);
     StopStation_Up=find(StopPlan_Up==1);
 
-    for d=1:1:length(StopStation_Down)-1%ÏÂĞĞ
+    for d=1:1:length(StopStation_Down)-1%ï¿½ï¿½ï¿½ï¿½
         index_of_runtime_down=index_of_runtime_down+1;
         StartStation=StopStation_Down(d);
         EndStation=StopStation_Down(d+1);
         Up=0;
         sheet=Solution(1,TrainNum*2+TotalStopTimes*2+index_of_runtime_down);
+        % ç¡®ä¿ sheet ç´¢å¼•åœ¨åˆç†èŒƒå›´å†…
+        if sheet < 1
+            sheet = 1;
+        end
         [T]=FindTSet(StartStation,EndStation,sheet,Up);
         Runtime_Down_tmp(i,StartStation:EndStation-1)=T;
     end
 
-    for d=1:1:length(StopStation_Up)-1%ÏÂĞĞ
+    for d=1:1:length(StopStation_Up)-1%ï¿½ï¿½ï¿½ï¿½
         index_of_runtime_up=index_of_runtime_up+1;
         StartStation=StopStation_Up(d+1);
         EndStation=StopStation_Up(d);
         Up=1;
         sheet=Solution(1,TrainNum*2+TotalStopTimes*2+TotalSections+index_of_runtime_up);
+        % ç¡®ä¿ sheet ç´¢å¼•åœ¨åˆç†èŒƒå›´å†…  
+        if sheet < 1
+            sheet = 1;
+        end
         [T]=FindTSet(StartStation,EndStation,sheet,Up);
         disp(T)
-        Runtime_Up_tmp(i,EndStation:StartStation-1)=fliplr(T);%Ç°ºóµ¹×ª
+        Runtime_Up_tmp(i,EndStation:StartStation-1)=fliplr(T);%Ç°ï¿½ï¿½ï¿½ï¿½×ª
     end
 end
 for i=1:1:StopPlanNum
@@ -86,15 +111,15 @@ for i=1:1:StopPlanNum
 end
 Runtime_Up=fliplr(Runtime_Up);
 
-%% ¶ÔÉÏÊöµÄËùÓĞÊ±¼ä½øĞĞÀÛ¼Æ£¬»ñµÃÃ¿Á¾³µÔÚÃ¿¸ö³µÕ¾µÄµ½·¢Ê±¼ä
+%% ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û¼Æ£ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½Äµï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 RealTime_Down=zeros(StationNum,3,TrainNum);
 RealTime_Up=zeros(StationNum,3,TrainNum);
-%ĞĞ±íÊ¾³µÕ¾
-%µÚÒ»ÁĞ£ºµ½´ïÊ±¼ä
-%µÚ¶şÁĞ£º³ö·¢Ê±¼ä
-%µÚÈıÁĞ£ºÍ£Õ¾Ê±¼ä
+%ï¿½Ğ±ï¿½Ê¾ï¿½ï¿½Õ¾
+%ï¿½ï¿½Ò»ï¿½Ğ£ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+%ï¿½Ú¶ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+%ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½Í£Õ¾Ê±ï¿½ï¿½
 
-%ÏÂĞĞ
+%ï¿½ï¿½ï¿½ï¿½
 for i=1:1:TrainNum
     plan=mod(i,10);
     if (plan==0)
@@ -105,9 +130,9 @@ for i=1:1:TrainNum
     RealTime_Down(1,2,i)=DepartTime;
     RealTime_Down(1,3,i)=Dwell_Down(plan,1);
     for j=2:1:StationNum
-        %µ½´ïÊ±¼ä=ÉÏ¸ö³µÕ¾µÄ·¢³µÊ±¼ä+ÉÏ¸ö³µÕ¾µ½Õâ¸ö³µÕ¾µÄÇø¼äÔËĞĞÊ±¼ä
+        %ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½=ï¿½Ï¸ï¿½ï¿½ï¿½Õ¾ï¿½Ä·ï¿½ï¿½ï¿½Ê±ï¿½ï¿½+ï¿½Ï¸ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
         ArrivalTime=RealTime_Down(j-1,2,i)+Runtime_Down(plan,j-1);
-        %³ö·¢Ê±¼ä=µ½´ïÊ±¼ä+Õâ¸ö³µÕ¾µÄÍ£Õ¾Ê±¼ä
+        %ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½=ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½Í£Õ¾Ê±ï¿½ï¿½
         DepartTime=ArrivalTime+Dwell_Down(plan,j);
         RealTime_Down(j,1,i)=ArrivalTime;
         RealTime_Down(j,2,i)=DepartTime;
@@ -115,7 +140,7 @@ for i=1:1:TrainNum
     end
 end
 
-%ÉÏĞĞ
+%ï¿½ï¿½ï¿½ï¿½
 for i=1:1:TrainNum
     plan=mod(i,10);
     if (plan==0)
@@ -126,9 +151,9 @@ for i=1:1:TrainNum
     RealTime_Up(1,2,i)=DepartTime;
     RealTime_Up(1,3,i)=Dwell_Up(plan,1);
     for j=2:1:StationNum
-        %µ½´ïÊ±¼ä=ÉÏ¸ö³µÕ¾µÄ·¢³µÊ±¼ä+ÉÏ¸ö³µÕ¾µ½Õâ¸ö³µÕ¾µÄÇø¼äÔËĞĞÊ±¼ä
+        %ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½=ï¿½Ï¸ï¿½ï¿½ï¿½Õ¾ï¿½Ä·ï¿½ï¿½ï¿½Ê±ï¿½ï¿½+ï¿½Ï¸ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
         ArrivalTime=RealTime_Up(j-1,2,i)+Runtime_Up(plan,j-1);
-        %³ö·¢Ê±¼ä=µ½´ïÊ±¼ä+Õâ¸ö³µÕ¾µÄÍ£Õ¾Ê±¼ä
+        %ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½=ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½Í£Õ¾Ê±ï¿½ï¿½
         DepartTime=ArrivalTime+Dwell_Up(plan,j);
         RealTime_Up(j,1,i)=ArrivalTime;
         RealTime_Up(j,2,i)=DepartTime;
@@ -138,8 +163,18 @@ end
 
 % RealTime_Down_ceil=zero(StationNum,3,TrainNum);
 % RealTime_Up_ceil=zero(StationNum,3,TrainNum);
-fid=fopen("C:\Users\cjs\Desktop\ÏÂĞĞ40Á¾³µ-×îµÍµç·Ñ.txt",'wt');		% Ğ´ÈëÎÄ¼şÂ·¾¶
-fid2=fopen("C:\Users\cjs\Desktop\ÉÏĞĞ40Á¾³µ-×îµÍµç·Ñ.txt",'wt');		% Ğ´ÈëÎÄ¼şÂ·¾¶
+
+% åˆ›å»ºè¾“å‡ºæ–‡ä»¶è·¯å¾„ï¼ˆä½¿ç”¨å½“å‰å·¥ä½œç›®å½•ï¼‰
+output_dir = pwd; % ä½¿ç”¨å½“å‰å·¥ä½œç›®å½•
+down_file = fullfile(output_dir, 'TimetableResults_Down.txt');
+up_file = fullfile(output_dir, 'TimetableResults_Up.txt');
+
+fid=fopen(down_file,'wt');  % ä¸‹è¡Œæ—¶åˆ»è¡¨æ–‡ä»¶
+fid2=fopen(up_file,'wt');   % ä¸Šè¡Œæ—¶åˆ»è¡¨æ–‡ä»¶
+
+if fid == -1 || fid2 == -1
+    error('æ— æ³•åˆ›å»ºè¾“å‡ºæ–‡ä»¶ï¼Œè¯·æ£€æŸ¥æ–‡ä»¶å¤¹æƒé™');
+end
 for x=1:1:TrainNum
     for y=1:1:StationNum
            fprintf(fid,'%10s %10s %10s\n',TimeFormatConver(RealTime_Down(y,1,x),9,0,0),TimeFormatConver(RealTime_Down(y,2,x),9,0,0),mat2str(RealTime_Down(y,3,x)));  

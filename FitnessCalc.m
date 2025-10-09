@@ -136,6 +136,27 @@ for i=1:1:TrainNum
         Power=OptimizeData(:,5)';
         Section=OptimizeData(:,6)';
         TimeMat=Time+round(d);%相对时间+出发时刻=真实时间矩阵
+        
+        % 安全检查：确保数组长度匹配
+        expected_length = TimeMat(1,end) - TimeMat(1,1) + 1;
+        actual_length = length(Power);
+        
+        if actual_length ~= expected_length
+            % 如果长度不匹配，调整数据长度
+            if actual_length > expected_length
+                % 截取数据
+                Power = Power(1:expected_length);
+                Velocity = Velocity(1:expected_length);
+                GLB = GLB(1:expected_length);
+                Section = Section(1:expected_length);
+            else
+                % 扩展数据（重复最后一个值）
+                Power = [Power, repmat(Power(end), 1, expected_length - actual_length)];
+                Velocity = [Velocity, repmat(Velocity(end), 1, expected_length - actual_length)];
+                GLB = [GLB, repmat(GLB(end), 1, expected_length - actual_length)];
+                Section = [Section, repmat(Section(end), 1, expected_length - actual_length)];
+            end
+        end
 %         disp(' ')
 %         disp(round(d))
 %         disp(Time(1,1)+1)
@@ -211,6 +232,27 @@ for i=1:1:TrainNum
         Power=OptimizeData(:,5)';
         Section=OptimizeData(:,6)';
         TimeMat=Time+round(d);%相对时间+出发时刻=真实时间矩阵
+        
+        % 安全检查：确保数组长度匹配
+        expected_length = TimeMat(1,end) - TimeMat(1,1) + 1;
+        actual_length = length(Power);
+        
+        if actual_length ~= expected_length
+            % 如果长度不匹配，调整数据长度
+            if actual_length > expected_length
+                % 截取数据
+                Power = Power(1:expected_length);
+                Velocity = Velocity(1:expected_length);
+                GLB = GLB(1:expected_length);
+                Section = Section(1:expected_length);
+            else
+                % 扩展数据（重复最后一个值）
+                Power = [Power, repmat(Power(end), 1, expected_length - actual_length)];
+                Velocity = [Velocity, repmat(Velocity(end), 1, expected_length - actual_length)];
+                GLB = [GLB, repmat(GLB(end), 1, expected_length - actual_length)];
+                Section = [Section, repmat(Section(end), 1, expected_length - actual_length)];
+            end
+        end
         
         Power_Time(TrainNum+i,TimeMat(1,1)+1:TimeMat(1,end)+1)=Power;
         Velocity_Time(TrainNum+i,TimeMat(1,1)+1:TimeMat(1,end)+1)=Velocity;

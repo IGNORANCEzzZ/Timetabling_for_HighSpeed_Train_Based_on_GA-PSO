@@ -1,5 +1,5 @@
 function [t]=findt(StartStation,EndStation,sheet,StationNum,Up)
-%% �������������ʱ
+%% ��������������ʱ
 
 %%
 global Station;
@@ -10,6 +10,19 @@ global OptimizationData;
 
 row=StartStation;
 col=EndStation;
+
+% 安全检查：确保索引不超出边界
+if isempty(OptimizationData{row,col})
+    error('OptimizationData{%d,%d} 为空，请检查数据初始化', row, col);
+end
+
+% 获取可用的数据集数量
+available_sheets = length(OptimizationData{row,col});
+if sheet > available_sheets
+    warning('请求的sheet索引 %d 超出可用范围 %d，使用最后一个可用的数据集', sheet, available_sheets);
+    sheet = available_sheets;
+end
+
 DataforOneSection = OptimizationData{row,col}{1,sheet};
 t=0;
 t0=0;
